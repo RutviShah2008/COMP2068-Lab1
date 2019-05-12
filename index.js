@@ -6,6 +6,7 @@ const rl = readline.createInterface({
 });
 const validOptions = ['rock', 'paper', 'scissors'];
 
+
 const generateChoice = () => {
   const index = Math.floor(Math.random() * Math.floor(3));
   return validOptions[index];
@@ -47,7 +48,6 @@ getUserChoice().then(choice => {
   ) {
     console.log('Player won');
   } else {
-    
     // Else computer won
     console.log('Computer won');
   }
