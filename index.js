@@ -1,7 +1,7 @@
 const readline = require('readline');
 
 const validOptions = ['rock', 'paper', 'scissors'];
-const playAgainOptions = ['yes','no'];
+const playAgainOptions = ['y','n'];
 const stats = {"Win":0,"Lose":0,"Tie":0,"UserScore": 0};
 
 const rl = readline.createInterface({
@@ -71,7 +71,7 @@ const playAgain = () =>
     const userInput = userAnswer.trim().toLowerCase();
     if(playAgainOptions.includes(userAnswer))
     {
-      if(userInput == "yes")
+      if(userInput == "y")
       {
         rockPaperScissors();
       }
