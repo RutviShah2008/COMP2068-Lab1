@@ -1,57 +1,104 @@
 const readline = require('readline');
 
+const validOptions = ['rock', 'paper', 'scissors'];
+const playAgainOptions = ['yes','no'];
+const stats = {"Win":0,"Lose":0,"Tie":0,"UserScore": 0};
+
 const rl = readline.createInterface({
   input: process.stdin, // Similar to Request in Node
   output: process.stdout // Similar to response in Node
-});
-const validOptions = ['rock', 'paper', 'scissors'];
+}).on('line', userChoise);
 
+const rockPaperScissors = () =>
+{
+  console.log(`Please choose one of the following:
+    Rock
+    Paper
+    Scissors\n\t\t`);
+};
 
-const generateChoice = () => {
+function userChoise(input)
+{
+  const userResponse = input.trim().toLowerCase();
+
+  if(validOptions.includes(userResponse))
+  {
+    const computerChoice = generateChoice();
+
+    if(userResponse == computerChoice)
+    {
+      console.log('There was a tie');
+      stats.Tie +=1;  
+      console.log(`Player chose: ${userResponse}
+                   Computer chose: ${computerChoice}`);  
+      rockPaperScissors();
+    }
+    else if (
+          // User winning conditions
+          (userResponse === 'rock' && computerChoice === 'scissors') ||
+          (userResponse === 'scissors' && computerChoice === 'paper') ||
+          (userResponse === 'paper' && computerChoice === 'rock')
+        ) 
+    {
+      console.log('Player won');
+      stats.Win +=1;
+      stats.UserScore+=5;  
+      console.log(`Player chose: ${userResponse}
+      Computer chose: ${computerChoice}`);    
+      playAgain();
+    }
+    else
+    {
+      console.log('Player Lose');
+      console.log(`Player chose: ${userResponse}
+      Computer chose: ${computerChoice}`); 
+      stats.Lose+=1;
+      playAgain();
+    }
+  }
+  else{
+    console.log(`Please enter correct choice`);
+    rockPaperScissors();
+  }
+    
+};
+
+const playAgain = () => 
+{
+  rl.question(`Would you like to continue : [Y/N]?`,
+  userAnswer => 
+  {
+    const userInput = userAnswer.trim().toLowerCase();
+    if(playAgainOptions.includes(userAnswer))
+    {
+      if(userInput == "yes")
+      {
+        start();
+      }
+      else{
+        report();
+        rl.close();
+      }
+    }
+    else{
+      console.log(`please choose correct option by writing Yes and No`);
+      playAgain();
+    }
+  });
+};
+
+const generateChoice = () => 
+{
   const index = Math.floor(Math.random() * Math.floor(3));
   return validOptions[index];
 };
 
-// Convert ReadLine.Question into a promise
-const question = str => new Promise(resolve => rl.question(str, resolve));
-
-// Keep asking for user choice until it is valid
-const getUserChoice = async () => {
-  let currentChoice = null;
-  const ourQuestion = `Please choose one of the following:
-  Rock
-  Paper
-  Scissors
-  `;
-
-  while (!validOptions.includes(currentChoice)) {
-    currentChoice = await question(ourQuestion);
-  }
-
-  return currentChoice;
+const report = () =>
+{
+  process.stdout.write(`\nPlayer ScoreCard: Win:${stats.Win}
+                  Lose:${stats.Lose}
+                  Tie:${stats.Tie}
+                  Score:${stats.UserScore}`);
 };
 
-// Call our ASYNC function and then return their choice
-getUserChoice().then(choice => {
-  // Generate computer choice
-  const computer = generateChoice();
-
-  // Winning Conditions
-  // First is Tie
-  if (choice === computer) {
-    console.log('There was a tie');
-  } else if (
-    // User winning conditions
-    (choice === 'rock' && computer === 'scissors') ||
-    (choice === 'scissors' && computer === 'paper') ||
-    (choice === 'paper' && computer === 'rock')
-  ) {
-    console.log('Player won');
-  } else {
-    // Else computer won
-    console.log('Computer won');
-  }
-
-  console.log(`Player chose: ${choice}
-        Computer chose: ${computer}`);
-});
+rockPaperScissors();
