@@ -73,7 +73,7 @@ const playAgain = () =>
     {
       if(userInput == "yes")
       {
-        start();
+        rockPaperScissors();
       }
       else{
         report();
