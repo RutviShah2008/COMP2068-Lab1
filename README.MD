@@ -1,6 +1,6 @@
 <html>
 <body>
-<h1>COMP 2106 – Lab 1 – Rock Paper Scissors</h1>
+<h1>Rock Paper Scissors</h1>
 
 <p>
 Write a JavaScript program that allows the user to play Rock Paper Scissors.
